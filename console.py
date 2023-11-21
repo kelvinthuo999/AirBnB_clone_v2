@@ -114,35 +114,35 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, args):
-    """Create an object of any class with given parameters."""
-    if not args:
-        print("** class name missing **")
-        return
+        """Create an object of any class with given parameters."""
+        if not args:
+            print("** class name missing **")
+            return
 
-    # Split the input into class name and parameters
-    args_list = args.split()
+        # Split the input into class name and parameters
+        args_list = args.split()
 
-    class_name = args_list[0]
+        class_name = args_list[0]
 
-    if class_name not in HBNBCommand.classes:
-        print("** class doesn't exist **")
-        return
+        if class_name not in HBNBCommand.classes:
+            print("** class doesn't exist **")
+            return
 
-    # Check if parameters are provided
-    if len(args_list) == 1:
-        print("** no parameters provided **")
-        return
+        # Check if parameters are provided
+        if len(args_list) == 1:
+            print("** no parameters provided **")
+            return
 
-    # Extract parameters
-    param_list = args_list[1:]
+        # Extract parameters
+        param_list = args_list[1:]
 
-    # Create an instance of the specified class
-    new_instance = HBNBCommand.classes[class_name]()
+        # Create an instance of the specified class
+        new_instance = HBNBCommand.classes[class_name]()
 
-    # Parse and set the attributes based on provided parameters
-    for param in param_list:
-        # Split each parameter into key and value
-        key, value = param.split('=')
+        # Parse and set the attributes based on provided parameters
+        for param in param_list:
+            # Split each parameter into key and value
+            key, value = param.split('=')
 
         # Replace underscores with spaces in the key
         key = key.replace('_', ' ')
