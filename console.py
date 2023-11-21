@@ -114,17 +114,57 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, args):
-        """ Create an object of any class"""
-        if not args:
-            print("** class name missing **")
-            return
-        elif args not in HBNBCommand.classes:
-            print("** class doesn't exist **")
-            return
-        new_instance = HBNBCommand.classes[args]()
-        storage.save()
-        print(new_instance.id)
-        storage.save()
+    """Create an object of any class with given parameters."""
+    if not args:
+        print("** class name missing **")
+        return
+
+    # Split the input into class name and parameters
+    args_list = args.split()
+
+    class_name = args_list[0]
+
+    if class_name not in HBNBCommand.classes:
+        print("** class doesn't exist **")
+        return
+
+    # Check if parameters are provided
+    if len(args_list) == 1:
+        print("** no parameters provided **")
+        return
+
+    # Extract parameters
+    param_list = args_list[1:]
+
+    # Create an instance of the specified class
+    new_instance = HBNBCommand.classes[class_name]()
+
+    # Parse and set the attributes based on provided parameters
+    for param in param_list:
+        # Split each parameter into key and value
+        key, value = param.split('=')
+
+        # Replace underscores with spaces in the key
+        key = key.replace('_', ' ')
+
+        # Handle different value types
+        if value.startswith('"') and value.endswith('"'):
+            # String: Remove double quotes and handle escaped quotes
+            value = value[1:-1].replace('\\"', '"')
+        elif '.' in value:
+            # Float
+            value = float(value)
+        else:
+            # Integer
+            value = int(value)
+
+        # Set the attribute of the instance
+        setattr(new_instance, key, value)
+
+    # Save the instance to storage
+    storage.save()
+
+    print(new_instance.id)
 
     def help_create(self):
         """ Help information for the create method """
