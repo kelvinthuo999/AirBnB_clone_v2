@@ -1,9 +1,13 @@
--- Script to create a MySQL server with the database hbnb_dev_db.
+-- Script to prepare a MySQL server for the project.
+
+-- Create the database if it doesn't exist
 CREATE DATABASE IF NOT EXISTS hbnb_dev_db;
 
-CREATE USER IF NOT EXISTS 'hbnb_dev'@'localhost';
-SET PASSWORD FOR 'hbnb_dev'@'localhost' = 'hbnb_dev_pwd';
+-- Create the user if it doesn't exist
+CREATE USER IF NOT EXISTS 'hbnb_dev'@'localhost' IDENTIFIED BY 'hbnb_dev_pwd';
 
-GRANT USAGE ON *.* TO 'hbnb_dev'@'localhost';
-GRANT SELECT ON `performance_schema`.* TO 'hbnb_dev'@'localhost';
-GRANT ALL PRIVILEGES ON `hbnb_dev_db`.* TO 'hbnb_dev'@'localhost';
+-- Grant all privileges on the database to the user
+GRANT ALL PRIVILEGES ON hbnb_dev_db.* TO 'hbnb_dev'@'localhost';
+
+-- Grant SELECT privilege on performance_schema database to the user
+GRANT SELECT ON performance_schema.* TO 'hbnb_dev'@'localhost';
