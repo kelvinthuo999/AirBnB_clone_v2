@@ -44,7 +44,7 @@ class DBStorage:
         self.__session.add(obj)
 
     def save(self):
-        """Commit all changes of the current database session (self.__session)."""
+        """Commit changes of the current db session (self.__session)."""
         self.__session.commit()
 
     def delete(self, obj=None):
@@ -54,7 +54,7 @@ class DBStorage:
 
     def reload(self):
         """Create all tables in the database (feature of SQLAlchemy).
-        Create the current database session (self.__session) from the engine (self.__engine)
+        Create current db session (self.__session) from engine (self.__engine)
         by using a sessionmaker.
         """
         Base.metadata.create_all(self.__engine)

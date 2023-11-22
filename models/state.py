@@ -2,7 +2,7 @@
 """ State Module for HBNB project """
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String
-from sqlalchemy.orm import relationship
+from models import storage  # Import storage to fix the issue
 
 
 class State(BaseModel, Base):
@@ -10,9 +10,9 @@ class State(BaseModel, Base):
     __tablename__ = 'states'
 
     name = Column(String(128), nullable=False)
-    
+
     # For DBStorage
-    if models.storage_type == 'db':
+    if storage.__class__.__name__ == 'DBStorage':  # Check storage type
         cities = relationship('City', backref='state', cascade='all, delete-orphan')
     # For FileStorage
     else:
@@ -20,7 +20,6 @@ class State(BaseModel, Base):
         def cities(self):
             """Getter attribute that returns the list of City instances
             with state_id equals to the current State.id"""
-            from models import storage
             city_list = []
             for city in storage.all('City').values():
                 if city.state_id == self.id:
