@@ -3,6 +3,8 @@
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, Integer, Float, ForeignKey
 from sqlalchemy.orm import relationship
+from models.review import Review
+import models
 
 
 class Place(BaseModel, Base):
@@ -20,6 +22,15 @@ class Place(BaseModel, Base):
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
 
-    # Assuming Amenity is another model with a relationship to Place
-    amenities = relationship("Amenity", secondary="place_amenity",
-                             viewonly=False)
+    # For DBStorage
+    reviews = relationship("Review", backref="place",
+                           cascade="all, delete-orphan")
+
+    # For FileStorage
+    @property
+    def reviews(self):
+        """Getter attribute for reviews in FileStorage"""
+        all_reviews = models.storage.all(Review)
+        place_reviews = [review for review in all_reviews.values()
+                         if review.place_id == self.id]
+        return place_reviews
