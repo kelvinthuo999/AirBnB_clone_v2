@@ -2,7 +2,8 @@
 """ State Module for HBNB project """
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String
-from models import storage  # Import storage to fix the issue
+from models import storage
+from sqlalchemy.orm import relationship
 
 
 class State(BaseModel, Base):
@@ -12,7 +13,7 @@ class State(BaseModel, Base):
     name = Column(String(128), nullable=False)
 
     # For DBStorage
-    if storage.__class__.__name__ == 'DBStorage':  # Check storage type
+    if type(storage).__name__ == 'DBStorage':  # Check storage type
         cities = relationship('City', backref='state', cascade='all, delete-orphan')
     # For FileStorage
     else:
